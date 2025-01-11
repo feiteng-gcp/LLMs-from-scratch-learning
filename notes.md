@@ -1,8 +1,10 @@
-# serves as the reading notes while browsing through the book.
+## serves as the reading notes while browsing through the book.
 
+---
 12-30-2024 start reading
 
-### ch 1
+---
+# Chapter 1
 1-2-2024
 
 1.1
@@ -42,6 +44,60 @@ Building LLM in 3 stages
 - stage 1, code attention mechanism 
 - stage 2, code and pretraining GPT like LLM
 - stage 3, take pretrained LLM and fine-tune it to follow instructions
+
+---
+# Chapter 2
+
+2.1
+Deep neural network models cannot process raw text directly, as text is categorical, it's not comtapible tiwht mathematical operations used to implement and train neural networks. We need a way to represent words as continuous-valued vectors.
+
+Converting data into a vector format is referred to as *embedding*. Embedding is a mapping from discrete objects to a continuous vector space. Sentence or paragraph embeddings are popular choices for retrieval-augmented generation, combining generation with retrieval to pull relevant information when generating text. 
+
+One popular example is Word2Vec approach, by predicting context of a word given target word or vice versa. 
+
+
+2.2
+Tokens are either individual words or special characters, including punctuation characters. 
+Example text - [The Verdict](https://github.com/rasbt/LLMs-from-scratch/blob/main/ch02/01_main-chapter-code/the-verdict.txt)
+
+```
+with open("the-verdict.txt", "r", encoding="utf-8") as f:
+	raw_text = f.read()
+print("Total number of character:", len(raw_text))
+print(raw_text[:99])
+
+import re
+text = "Hello, world. Is this-- a test?"
+result = re.split(r'([,.:;?_!"()\']|--|\s)', text)
+result = [item.strip() for item in result if item.strip()]
+print(result)
+
+
+with open("the-verdict.txt", "r", encoding="utf-8") as f:
+	raw_text = f.read()
+	processed = re.split(r'([,.:;?_!"()\']|--|\s)', raw_text)
+	processed = [item.strip() for item in processed if item.strip()]
+print(len(processed))
+print(processed[:30])
+```
+
+2.3
+Convert tokens from string to an integer representation to produce token IDs. To convert outputs of an LLM from numbers back into text, we need a way to turn token IDs into text. 
+
+Implement a simple text tokenizer
+
+related code - https://github.com/rasbt/LLMs-from-scratch/blob/main/ch02/01_main-chapter-code/ch02.ipynb
+
+2.4
+Modify tokenizer to handle unknown words, and special tokens handling context or other relevant informatin in text. Special tokens include markers for unknown words and document boundaries. Example: <|unk|> and <|endoftext|>
+
+Some additional special tokens:
+- [BOS] beginning of sequence
+- [EOS] end of sequence
+- [PAD] padding
+
+2.5 
+A more sophisiticated tokenization scheme - Byte pair encoding (BPE). Public library available - *tiktoken*.
 
 
 
